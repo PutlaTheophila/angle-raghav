@@ -1,0 +1,43 @@
+name: Build Windows executable
+
+# Builds a standalone StrainAnalyzer.exe (no Python needed on the target PC).
+# Trigger it from the GitHub "Actions" tab (Run workflow), or push a tag like
+# v1.1.0.  Download the .zip from the run's "Artifacts" section.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build with PyInstaller
+        run: >
+          pyinstaller --noconfirm --clean --windowed --onefile
+          --name "StrainAnalyzer"
+          --collect-submodules skimage
+          --collect-submodules scipy
+          --collect-data skimage
+          --collect-data matplotlib
+          app.py
+
+      - name: Smoke test (batch mode import)
+        run: python -c "import app, tracker; print('imports OK')"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StrainAnalyzer-windows
+          path: dist/StrainAnalyzer.exe

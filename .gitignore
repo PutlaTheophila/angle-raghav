@@ -1,0 +1,14 @@
+# build artifacts (regenerate with build_app.sh / build_app.bat)
+build/
+dist/
+.buildenv/
+*.spec.bak
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# generated outputs
+out/
+debug/

@@ -1,7 +1,29 @@
 {
   "mm_per_px": 0.002053388090349076,
-  "video": "test.mp4",
+  "media": "test.mp4",
   "width": 2908,
   "height": 2160,
-  "fps": 30.0
+  "fps": 30.0,
+  "thickness_mm": 0.026694045174537988,
+  "params": {
+    "blackhat_kernel_px": 31,
+    "blackhat_thresh": 26,
+    "yellow_rb_min": 15,
+    "crystal_v_lo": 40,
+    "crystal_v_hi": 215,
+    "min_component_px": 350,
+    "min_extent_px": 80.0,
+    "max_thickness_px": 30.0,
+    "min_chain_len": 60,
+    "metal_gray_max": 90,
+    "min_metal_area": 25000,
+    "metal_margin_px": 5,
+    "contact_dist_px": 90.0,
+    "max_rms_frac": 0.12,
+    "straight_frac": 0.004,
+    "min_chord_px": 200.0,
+    "max_strain_pct": 25.0,
+    "min_arc_samples": 25,
+    "roi": null
+  }
 }

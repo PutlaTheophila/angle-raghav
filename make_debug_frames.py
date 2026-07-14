@@ -61,23 +61,6 @@ def main(path: str = "test.mp4", n_frames: int = 16) -> int:
         res = analyze_frame(frame, fi, mm_per_px, params)
         annotated = draw_overlay(frame, res, show_panel=True,
                                  t_seconds=fi / fps)
-        # Overlay the detected tweezer contacts (cyan) for QA.
-        try:
-            from tracker import (segment_needle, skeletonize,
-                                 order_components, detect_tweezer_contacts)
-            m = segment_needle(frame, params)
-            sk = skeletonize(m)
-            ch = order_components(sk)
-            if ch:
-                lg = max(len(c) for c in ch)
-                sg = [c for c in ch if len(c) >= max(params.tip_min_chain_px,
-                      int(params.tip_min_chain_frac * lg))]
-                cr = np.concatenate(sg, axis=0).astype(float)
-                for c in detect_tweezer_contacts(frame, cr, params):
-                    cv2.circle(annotated, (int(c[0]), int(c[1])), 16,
-                               (255, 255, 0), 3, cv2.LINE_AA)
-        except Exception as e:
-            pass
         out_path = os.path.join(DEBUG_DIR, f"fit_{fi:04d}.png")
         cv2.imwrite(out_path, annotated)
         tag = (f"strain={res.strain_pct:.3f}% R={res.R_mm:.3f}mm"
